@@ -2,7 +2,7 @@ import {
   hexFromArgb,
   themeFromImage,
 } from "@material/material-color-utilities";
-import { Shuffle, Upload } from "@mui/icons-material";
+import { ColorLens, Shuffle, Upload } from "@mui/icons-material";
 import {
   AppBar,
   Box,
@@ -14,7 +14,9 @@ import {
   CardMedia,
   Checkbox,
   Container,
+  Divider,
   FormControlLabel,
+  Link,
   TextField,
   Toolbar,
   Typography,
@@ -29,41 +31,67 @@ export default function App() {
   return (
     <ThemeColorProvider>
       <ThemeProvider>
-        <AppBar color="default" position="static">
-          <Toolbar>
-            <Typography variant="h6" component="h1">
-              Material Dynamic Theme
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Container
-          sx={{ pt: 2, display: "flex", flexDirection: "column", gap: 2 }}
+        <Box
+          sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
         >
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2, 1fr)",
-              gap: 2,
-            }}
+          <AppBar color="default" position="static">
+            <Toolbar>
+              <Typography
+                variant="h6"
+                component="h1"
+                sx={{ display: "flex", gap: 1, alignItems: "center" }}
+              >
+                <AppIcon />
+                Material Dynamic Theme
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Container
+            component="main"
+            sx={{ py: 2, display: "flex", flexDirection: "column", gap: 2 }}
           >
-            <ColorChooser />
-            <ThemeCard />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+                gap: 2,
+              }}
+            >
+              <ColorChooser />
+              <ThemeCard />
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr 1fr" },
+                gap: 2,
+              }}
+            >
+              <ExampleCard color="primary" />
+              <ExampleCard color="secondary" />
+              <ExampleCard color="tertiary" />
+            </Box>
+          </Container>
+          <Box sx={{ mt: "auto" }}>
+            <Divider />
+            <Container component="footer" sx={{ py: 1 }}>
+              <Typography variant="caption">
+                Built by{" "}
+                <Link href="https://github.com/phjardas/material-dynamic/">
+                  Philipp Jardas
+                </Link>
+              </Typography>
+            </Container>
           </Box>
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 2,
-            }}
-          >
-            <ExampleCard color="primary" />
-            <ExampleCard color="secondary" />
-            <ExampleCard color="tertiary" />
-          </Box>
-        </Container>
+        </Box>
       </ThemeProvider>
     </ThemeColorProvider>
   );
+}
+
+function AppIcon() {
+  const themeColor = useThemeColor();
+  return <ColorLens sx={{ color: themeColor }} />;
 }
 
 function ColorChooser() {
@@ -110,12 +138,10 @@ function ColorChooser() {
   }, [imageUrl, setThemeColor]);
 
   return (
-    <Card sx={{ display: "flex", flexDirection: "column" }}>
+    <Card>
       {imageUrl && <CardMedia image={imageUrl} sx={{ height: 240 }} />}
       <CardHeader title="Color Chooser" />
-      <CardContent
-        sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}
-      >
+      <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <MuiColorInput
           label="Select theme color"
           value={themeColor}
@@ -130,7 +156,7 @@ function ColorChooser() {
           tabIndex={-1}
           startIcon={<Upload />}
         >
-          Upload image
+          Select image
           <Box
             component="input"
             type="file"
@@ -168,7 +194,12 @@ function ThemeCard() {
     <Card>
       <CardHeader title="Theme" />
       <CardContent
-        sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}
+        sx={{
+          flex: "0",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 1,
+        }}
       >
         <ColorBlock color="surface" />
         <ColorBlock color="surface-variant" />
@@ -215,7 +246,10 @@ function ExampleCard({
         color: `var(--mui-palette-md-on-${color}-container)`,
       }}
     >
-      <CardHeader title={`Example Card (${color})`} />
+      <CardHeader
+        title={`${color} Card`}
+        sx={{ textTransform: "capitalize" }}
+      />
       <CardContent>
         <Box
           sx={{

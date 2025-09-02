@@ -65,6 +65,9 @@ function useMuiTheme() {
             colorDefault: {
               "--AppBar-background": "var(--mui-palette-md-surface-variant)",
               "--AppBar-color": "var(--mui-palette-md-on-surface-variant)",
+              "--mui-palette-AppBar-darkBg": "var(--mui-palette-md-surface)",
+              "--mui-palette-AppBar-darkColor":
+                "var(--mui-palette-md-on-surface)",
             },
           },
         },
@@ -88,6 +91,15 @@ function useMuiTheme() {
             root: {
               backgroundColor: "var(--mui-palette-md-surface)",
               color: "var(--mui-palette-md-on-surface)",
+              display: "flex",
+              flexDirection: "column",
+            },
+          },
+        },
+        MuiCardContent: {
+          styleOverrides: {
+            root: {
+              flex: 1,
             },
           },
         },
