@@ -71,6 +71,7 @@ export default function App() {
               <ExampleCard color="secondary" />
               <ExampleCard color="tertiary" />
             </Box>
+            <AndroidThemeInfo />
           </Container>
           <Box sx={{ mt: "auto" }}>
             <Divider />
@@ -275,6 +276,45 @@ function ExampleCard({
           Primary
         </Button>
       </CardActions>
+    </Card>
+  );
+}
+
+function AndroidThemeInfo() {
+  const style = window.getComputedStyle(document.documentElement);
+  const values = Object.fromEntries(
+    [
+      "--android-color-primary",
+      "--android-color-on-primary",
+      "--android-color-primary-container",
+      "--android-color-on-primary-container",
+      "--android-color-secondary",
+      "--android-color-on-secondary",
+      "--android-color-secondary-container",
+      "--android-color-on-secondary-container",
+      "--android-color-tertiary",
+      "--android-color-on-tertiary",
+      "--android-color-tertiary-container",
+      "--android-color-on-tertiary-container",
+      "--android-color-surface",
+      "--android-color-on-surface",
+      "--android-color-background",
+      "--android-color-on-background",
+    ].map((key) => [key, style.getPropertyValue(key)] as const)
+  );
+
+  return (
+    <Card>
+      <CardHeader title="Android Theme" />
+      <CardContent>
+        {Object.entries(values)
+          .sort((a, b) => a[0].localeCompare(b[0]))
+          .map(([key, value]) => (
+            <Typography key={key}>
+              {key}: {value || <em>none</em>}
+            </Typography>
+          ))}
+      </CardContent>
     </Card>
   );
 }
